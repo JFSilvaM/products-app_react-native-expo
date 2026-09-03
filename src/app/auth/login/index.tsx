@@ -1,3 +1,5 @@
+import ThemedButton from "@/theme/components/themed-button";
+import ThemedLink from "@/theme/components/themed-link";
 import { ThemedText } from "@/theme/components/themed-text";
 import ThemedTextInput from "@/theme/components/themed-text-input";
 import { Icon } from "@expo/ui";
@@ -16,6 +18,11 @@ const MAIL_ICON = Icon.select({
 const LOCK_CLOSED_ICON = Icon.select({
   ios: "lock.fill",
   android: import("@expo/material-symbols/lock.xml"),
+});
+
+const ARROW_FORWARD_ICON = Icon.select({
+  ios: "arrow.forward",
+  android: import("@expo/material-symbols/arrow_forward.xml"),
 });
 
 const LoginScreen = () => {
@@ -46,6 +53,24 @@ const LoginScreen = () => {
             autoCapitalize="none"
             icon={LOCK_CLOSED_ICON}
           />
+        </View>
+
+        <ThemedButton icon={ARROW_FORWARD_ICON} style={{ marginVertical: 10 }}>
+          Ingresar
+        </ThemedButton>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ThemedText>¿No tienes cuenta?</ThemedText>
+
+          <ThemedLink href="/auth/register" style={{ marginHorizontal: 5 }}>
+            Crear cuenta
+          </ThemedLink>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
