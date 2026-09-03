@@ -4,6 +4,7 @@
  */
 
 import "@/global.css";
+import { Icon } from "@expo/ui";
 
 export const Colors = {
   light: {
@@ -25,3 +26,22 @@ export const Colors = {
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+
+export const Icons = {
+  mail: Icon.select({
+    ios: "mail.fill",
+    android: import("@expo/material-symbols/mail.xml"),
+  }),
+  lockClosed: Icon.select({
+    ios: "lock.fill",
+    android: import("@expo/material-symbols/lock.xml"),
+  }),
+  arrowForward: Icon.select({
+    ios: "arrow.forward",
+    android: import("@expo/material-symbols/arrow_forward.xml"),
+  }),
+  person: Icon.select({
+    ios: "person.fill",
+    android: import("@expo/material-symbols/person.xml"),
+  }),
+};

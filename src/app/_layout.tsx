@@ -1,13 +1,15 @@
+import { useTheme } from "@/theme/hooks/use-theme";
 import { useFonts } from "expo-font";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { useColorScheme, View } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();
+  const backgroundColor = useTheme().background;
   const [loaded] = useFonts({
     KanitRegular: require("@/assets/fonts/Kanit-Regular.ttf"),
     KanitBold: require("@/assets/fonts/Kanit-Bold.ttf"),
@@ -21,9 +23,11 @@ const RootLayout = () => {
   if (!loaded) return null;
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }} />
-    </ThemeProvider>
+    <View style={{ flex: 1, backgroundColor }}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ThemeProvider>
+    </View>
   );
 };
 
