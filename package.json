@@ -5,6 +5,7 @@
   "dependencies": {
     "@expo/material-symbols": "^0.1.1",
     "@expo/ui": "~57.0.15",
+    "@tanstack/react-query": "^5.102.8",
     "axios": "^1.20.0",
     "expo": "~57.0.19",
     "expo-constants": "~57.0.17",
