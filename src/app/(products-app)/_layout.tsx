@@ -1,3 +1,4 @@
+import LogoutIconButton from "@/auth/components/logout-icon-button";
 import { useAuthStore } from "@/auth/store/use-auth-store";
 import { ThemedView } from "@/theme/components/themed-view";
 import { useTheme } from "@/theme/hooks/use-theme";
@@ -32,7 +33,10 @@ const CheckAuthenticationLayout = () => {
         contentStyle: { backgroundColor },
       }}
     >
-      <Stack.Screen name="(home)/index" options={{ title: "Productos" }} />
+      <Stack.Screen
+        name="(home)/index"
+        options={{ title: "Productos", headerLeft: () => <LogoutIconButton /> }}
+      />
     </Stack>
   );
 };

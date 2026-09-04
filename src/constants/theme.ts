@@ -44,4 +44,8 @@ export const Icons = {
     ios: "person.fill",
     android: import("@expo/material-symbols/person.xml"),
   }),
+  logout: Icon.select({
+    ios: "rectangle.portrait.and.arrow.right",
+    android: import("@expo/material-symbols/logout.xml"),
+  }),
 };
