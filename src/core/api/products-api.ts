@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 
 const STAGE = process.env.EXPO_PUBLIC_STAGE || "dev";
 
-const API_URL =
+export const API_URL =
   STAGE === "prod"
     ? process.env.EXPO_PUBLIC_API_URL
     : Platform.OS === "ios"
