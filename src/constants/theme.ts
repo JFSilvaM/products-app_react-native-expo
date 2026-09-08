@@ -48,4 +48,8 @@ export const Icons = {
     ios: "rectangle.portrait.and.arrow.right",
     android: import("@expo/material-symbols/logout.xml"),
   }),
+  camera: Icon.select({
+    ios: "camera",
+    android: import("@expo/material-symbols/photo_camera.xml"),
+  }),
 };
