@@ -1,13 +1,24 @@
 import { Icons } from "@/constants/theme";
+import { useProduct } from "@/core/products/hooks/useProduct";
 import ThemedTextInput from "@/theme/components/themed-text-input";
 import { ThemedView } from "@/theme/components/themed-view";
 import { Host, Icon } from "@expo/ui";
-import { useNavigation } from "expo-router";
+import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  View,
+} from "react-native";
 
 const ProductScreen = () => {
   const navigation = useNavigation();
+  const { id } = useLocalSearchParams();
+  const { productQuery } = useProduct(`${id}`);
+
+  const product = productQuery.data!;
 
   useEffect(() => {
     navigation.setOptions({
@@ -18,6 +29,23 @@ const ProductScreen = () => {
       ),
     });
   }, []);
+
+  useEffect(() => {
+    if (productQuery.data) {
+      navigation.setOptions({
+        title: productQuery.data.title,
+      });
+    }
+  }, [productQuery.data]);
+
+  if (productQuery.isLoading)
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={30} />
+      </View>
+    );
+
+  if (!productQuery.data) return <Redirect href="/(products-app)/(home)" />;
 
   return (
     <KeyboardAvoidingView
