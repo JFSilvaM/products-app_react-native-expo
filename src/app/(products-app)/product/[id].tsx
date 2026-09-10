@@ -1,4 +1,5 @@
 import { Icons } from "@/constants/theme";
+import ProductImages from "@/core/products/components/product-images";
 import { useProduct } from "@/core/products/hooks/useProduct";
 import ThemedTextInput from "@/theme/components/themed-text-input";
 import { ThemedView } from "@/theme/components/themed-view";
@@ -52,6 +53,8 @@ const ProductScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView>
+        <ProductImages images={product.images} />
+
         <ThemedView style={{ marginHorizontal: 10, marginTop: 20 }}>
           <ThemedTextInput placeholder="Título" style={{ marginVertical: 5 }} />
 
