@@ -1,13 +1,16 @@
 import { Icons } from "@/constants/theme";
 import ProductImages from "@/core/products/components/product-images";
 import { useProduct } from "@/core/products/hooks/useProduct";
+import ThemedButton from "@/theme/components/themed-button";
+import ThemedButtonGroup from "@/theme/components/themed-button-group";
 import ThemedTextInput from "@/theme/components/themed-text-input";
 import { ThemedView } from "@/theme/components/themed-view";
 import { Host, Icon } from "@expo/ui";
 import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -18,6 +21,8 @@ const ProductScreen = () => {
   const navigation = useNavigation();
   const { id } = useLocalSearchParams();
   const { productQuery } = useProduct(`${id}`);
+
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const product = productQuery.data!;
 
@@ -39,6 +44,20 @@ const ProductScreen = () => {
     }
   }, [productQuery.data]);
 
+  useEffect(() => {
+    const showKeyboard = Keyboard.addListener("keyboardDidShow", () =>
+      setIsKeyboardVisible(true),
+    );
+    const hideKeyboard = Keyboard.addListener("keyboardDidHide", () =>
+      setIsKeyboardVisible(false),
+    );
+
+    return () => {
+      showKeyboard.remove();
+      hideKeyboard.remove();
+    };
+  }, []);
+
   if (productQuery.isLoading)
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -50,9 +69,12 @@ const ProductScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: isKeyboardVisible ? 70 : 0 }}
+        showsVerticalScrollIndicator={false}
+      >
         <ProductImages images={product.images} />
 
         <ThemedView style={{ marginHorizontal: 10, marginTop: 20 }}>
@@ -80,6 +102,29 @@ const ProductScreen = () => {
 
           <ThemedTextInput placeholder="Inventario" style={{ flex: 1 }} />
         </ThemedView>
+
+        <ThemedView style={{ marginHorizontal: 10 }}>
+          <ThemedButtonGroup
+            options={["XS", "S", "M", "L", "XL", "XXL", "XXXL"]}
+            selectedOptions={product.sizes}
+            onSelect={(option) => console.log({ option })}
+          />
+
+          <ThemedButtonGroup
+            options={["kid", "men", "women", "unisex"]}
+            selectedOptions={[product.gender]}
+            onSelect={(option) => console.log({ option })}
+          />
+        </ThemedView>
+
+        <View style={{ marginHorizontal: 10, marginBottom: 50, marginTop: 20 }}>
+          <ThemedButton
+            icon={Icons.save}
+            onPress={() => console.log("Guardar")}
+          >
+            Guardar
+          </ThemedButton>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -52,4 +52,8 @@ export const Icons = {
     ios: "camera",
     android: import("@expo/material-symbols/photo_camera.xml"),
   }),
+  save: Icon.select({
+    ios: "square.and.arrow.down",
+    android: import("@expo/material-symbols/save.xml"),
+  }),
 };
