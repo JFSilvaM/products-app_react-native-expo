@@ -1,5 +1,8 @@
+import { Icons } from "@/constants/theme";
 import ProductList from "@/core/products/components/product-list";
 import { useProducts } from "@/core/products/hooks/useProducts";
+import { FAB } from "@/theme/components/fab";
+import { router } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 
 const HomeScreen = () => {
@@ -14,6 +17,11 @@ const HomeScreen = () => {
       <ProductList
         products={productsQuery.data?.pages.flatMap((page) => page) ?? []}
         loadNextPage={loadNextPage}
+      />
+
+      <FAB
+        iconName={Icons.add}
+        onPress={() => router.push("/(products-app)/product/new")}
       />
     </View>
   );

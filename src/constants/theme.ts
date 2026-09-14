@@ -56,4 +56,8 @@ export const Icons = {
     ios: "square.and.arrow.down",
     android: import("@expo/material-symbols/save.xml"),
   }),
+  add: Icon.select({
+    ios: "plus",
+    android: import("@expo/material-symbols/add.xml"),
+  }),
 };

@@ -11,7 +11,13 @@ export interface Product {
   gender: string;
   tags: string[];
   images: string[];
-  user: User;
+  user?: User;
+}
+
+export enum Gender {
+  Kid = "kid",
+  Men = "men",
+  Women = "women",
 }
 
 export enum Size {
