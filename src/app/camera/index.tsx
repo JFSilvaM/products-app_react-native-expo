@@ -1,15 +1,18 @@
+import ConfirmImageButton from "@/theme/components/camera/confirm-image-button";
 import FlipCameraButton from "@/theme/components/camera/flip-camera-button";
 import GalleryButton from "@/theme/components/camera/gallery-button";
+import RetakeImageButton from "@/theme/components/camera/retake-image-button";
 import ReturnCancelButton from "@/theme/components/camera/return-cancel-button";
 import ShutterButton from "@/theme/components/camera/shutter-button";
 import { ThemedText } from "@/theme/components/themed-text";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const CameraScreen = () => {
   const [facing, setFacing] = useState<CameraType>("back");
+  const [selectedImage, setSelectedImage] = useState<string>();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
 
@@ -19,12 +22,18 @@ const CameraScreen = () => {
     const picture = await cameraRef.current.takePictureAsync({ quality: 0.7 });
 
     if (!picture?.uri) return;
+
+    setSelectedImage(picture.uri);
   };
 
   const toggleCameraFacing = () =>
     setFacing((current) => (current === "back" ? "front" : "back"));
 
   const onReturnCancel = () => router.dismiss();
+
+  const onPictureAccepted = () => {};
+
+  const onRetakePhoto = () => setSelectedImage(undefined);
 
   return !permission ? (
     <View />
@@ -44,6 +53,16 @@ const CameraScreen = () => {
       <TouchableOpacity onPress={requestPermission}>
         <ThemedText type="subtitle">Solicitar permiso</ThemedText>
       </TouchableOpacity>
+    </View>
+  ) : selectedImage ? (
+    <View style={styles.container}>
+      <Image source={{ uri: selectedImage }} style={styles.camera} />
+
+      <ConfirmImageButton onPress={onPictureAccepted} />
+
+      <RetakeImageButton onPress={onRetakePhoto} />
+
+      <ReturnCancelButton onPress={onReturnCancel} />
     </View>
   ) : (
     <View style={styles.container}>

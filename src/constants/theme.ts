@@ -72,4 +72,12 @@ export const Icons = {
     ios: "arrow.backward",
     android: import("@expo/material-symbols/arrow_back.xml"),
   }),
+  checkmark: Icon.select({
+    ios: "checkmark",
+    android: import("@expo/material-symbols/check.xml"),
+  }),
+  close: Icon.select({
+    ios: "xmark",
+    android: import("@expo/material-symbols/close.xml"),
+  }),
 };
