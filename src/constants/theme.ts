@@ -60,4 +60,16 @@ export const Icons = {
     ios: "plus",
     android: import("@expo/material-symbols/add.xml"),
   }),
+  cameraReverse: Icon.select({
+    ios: "camera.rotate",
+    android: import("@expo/material-symbols/cameraswitch.xml"),
+  }),
+  gallery: Icon.select({
+    ios: "photo",
+    android: import("@expo/material-symbols/photo.xml"),
+  }),
+  arrowBack: Icon.select({
+    ios: "arrow.backward",
+    android: import("@expo/material-symbols/arrow_back.xml"),
+  }),
 };
