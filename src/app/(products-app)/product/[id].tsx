@@ -2,12 +2,17 @@ import { Icons } from "@/constants/theme";
 import ProductImages from "@/core/products/components/product-images";
 import { useProduct } from "@/core/products/hooks/useProduct";
 import { Size } from "@/core/products/interfaces/product.interface";
+import MenuIconButton from "@/theme/components/menu-icon-button";
 import ThemedButton from "@/theme/components/themed-button";
 import ThemedButtonGroup from "@/theme/components/themed-button-group";
 import ThemedTextInput from "@/theme/components/themed-text-input";
 import { ThemedView } from "@/theme/components/themed-view";
-import { Host, Icon } from "@expo/ui";
-import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
+import {
+  Redirect,
+  router,
+  useLocalSearchParams,
+  useNavigation,
+} from "expo-router";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import {
@@ -31,9 +36,10 @@ const ProductScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Host matchContents>
-          <Icon name={Icons.camera} size={24} />
-        </Host>
+        <MenuIconButton
+          icon={Icons.camera}
+          onPress={() => router.push("../../camera")}
+        />
       ),
     });
   }, []);
