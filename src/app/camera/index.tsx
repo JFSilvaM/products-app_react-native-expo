@@ -7,6 +7,7 @@ import ReturnCancelButton from "@/theme/components/camera/return-cancel-button";
 import ShutterButton from "@/theme/components/camera/shutter-button";
 import { ThemedText } from "@/theme/components/themed-text";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import * as Sharing from "expo-sharing";
 import { useRef, useState } from "react";
@@ -77,6 +78,22 @@ const CameraScreen = () => {
     router.dismiss();
   };
 
+  const onPickImages = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      aspect: [4, 3],
+      quality: 0.5,
+      allowsMultipleSelection: true,
+      selectionLimit: 5,
+    });
+
+    if (result.canceled) return;
+
+    result.assets.forEach((asset) => addSelectedImage(asset.uri));
+
+    router.dismiss();
+  };
+
   return !cameraPermission ? (
     <View />
   ) : !cameraPermission.granted ? (
@@ -114,7 +131,7 @@ const CameraScreen = () => {
 
       <FlipCameraButton onPress={toggleCameraFacing} />
 
-      <GalleryButton onPress={() => {}} />
+      <GalleryButton onPress={onPickImages} />
 
       <ReturnCancelButton onPress={onReturnCancel} />
     </View>
