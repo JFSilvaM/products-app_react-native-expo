@@ -2,6 +2,7 @@ import { Icons } from "@/constants/theme";
 import ProductImages from "@/core/products/components/product-images";
 import { useProduct } from "@/core/products/hooks/useProduct";
 import { Size } from "@/core/products/interfaces/product.interface";
+import { useCameraStore } from "@/store/useCameraStore";
 import MenuIconButton from "@/theme/components/menu-icon-button";
 import ThemedButton from "@/theme/components/themed-button";
 import ThemedButtonGroup from "@/theme/components/themed-button-group";
@@ -28,10 +29,15 @@ const ProductScreen = () => {
   const navigation = useNavigation();
   const { id } = useLocalSearchParams();
   const { productQuery, productMutation } = useProduct(`${id}`);
+  const { selectedImages, clearImages } = useCameraStore();
 
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const product = productQuery.data!;
+
+  useEffect(() => {
+    return () => clearImages();
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -90,7 +96,7 @@ const ProductScreen = () => {
             }}
             showsVerticalScrollIndicator={false}
           >
-            <ProductImages images={values.images} />
+            <ProductImages images={[...product.images, ...selectedImages]} />
 
             <ThemedView style={{ marginHorizontal: 10, marginTop: 20 }}>
               <ThemedTextInput

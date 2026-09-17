@@ -1,3 +1,4 @@
+import { useCameraStore } from "@/store/useCameraStore";
 import ConfirmImageButton from "@/theme/components/camera/confirm-image-button";
 import FlipCameraButton from "@/theme/components/camera/flip-camera-button";
 import GalleryButton from "@/theme/components/camera/gallery-button";
@@ -19,10 +20,12 @@ import {
 } from "react-native";
 
 const CameraScreen = () => {
+  const cameraRef = useRef<CameraView>(null);
+  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
+  const { addSelectedImage } = useCameraStore();
+
   const [facing, setFacing] = useState<CameraType>("back");
   const [selectedImage, setSelectedImage] = useState<string>();
-  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
-  const cameraRef = useRef<CameraView>(null);
 
   const onShutterButtonPress = async () => {
     if (!cameraRef.current) return;
@@ -68,6 +71,10 @@ const CameraScreen = () => {
       UTI: "image/jpeg",
       mimeType: "image/jpeg",
     });
+
+    addSelectedImage(selectedImage);
+
+    router.dismiss();
   };
 
   return !cameraPermission ? (
