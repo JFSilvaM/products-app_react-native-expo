@@ -7,13 +7,21 @@ import ShutterButton from "@/theme/components/camera/shutter-button";
 import { ThemedText } from "@/theme/components/themed-text";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import { router } from "expo-router";
+import * as Sharing from "expo-sharing";
 import { useRef, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const CameraScreen = () => {
   const [facing, setFacing] = useState<CameraType>("back");
   const [selectedImage, setSelectedImage] = useState<string>();
-  const [permission, requestPermission] = useCameraPermissions();
+  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
 
   const onShutterButtonPress = async () => {
@@ -31,13 +39,40 @@ const CameraScreen = () => {
 
   const onReturnCancel = () => router.dismiss();
 
-  const onPictureAccepted = () => {};
-
   const onRetakePhoto = () => setSelectedImage(undefined);
 
-  return !permission ? (
+  const onRequestPermissions = async () => {
+    try {
+      const { status: cameraPermissionStatus } =
+        await requestCameraPermission();
+      if (cameraPermissionStatus !== "granted") {
+        Alert.alert("Lo siento", "Necesitamos permiso para usar la cámara");
+        return;
+      }
+
+      const sharingIsAvailable = await Sharing.isAvailableAsync();
+      if (!sharingIsAvailable) {
+        Alert.alert("Lo siento", "Necesitamos permiso para usar la galería");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Error", "Algo salió mal con los permisos");
+    }
+  };
+
+  const onPictureAccepted = async () => {
+    if (!selectedImage) return;
+
+    await Sharing.shareAsync(selectedImage, {
+      UTI: "image/jpeg",
+      mimeType: "image/jpeg",
+    });
+  };
+
+  return !cameraPermission ? (
     <View />
-  ) : !permission.granted ? (
+  ) : !cameraPermission.granted ? (
     <View
       style={{
         ...styles.container,
@@ -50,7 +85,7 @@ const CameraScreen = () => {
         Necesitamos permiso para usar la cámara y la galería
       </Text>
 
-      <TouchableOpacity onPress={requestPermission}>
+      <TouchableOpacity onPress={onRequestPermissions}>
         <ThemedText type="subtitle">Solicitar permiso</ThemedText>
       </TouchableOpacity>
     </View>
