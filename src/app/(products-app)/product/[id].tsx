@@ -21,6 +21,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
   ScrollView,
   View,
 } from "react-native";
@@ -100,6 +101,12 @@ const ProductScreen = () => {
               paddingBottom: isKeyboardVisible ? 70 : 0,
             }}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={productQuery.isFetching}
+                onRefresh={async () => await productQuery.refetch()}
+              />
+            }
           >
             <ProductImages images={[...product.images, ...selectedImages]} />
 
