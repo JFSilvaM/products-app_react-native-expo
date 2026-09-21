@@ -17,3 +17,12 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```bash
    bun start
    ```
+
+## Screenshots
+
+![Login](./assets/images/login.png)
+![Register](./assets/images/register.png)
+![Home](./assets/images/home.png)
+![ProductDetail](./assets/images/product-detail.png)
+![AddProduct](./assets/images/add-product.png)
+![Camera](./assets/images/camera.png)
